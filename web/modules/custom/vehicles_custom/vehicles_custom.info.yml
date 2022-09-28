@@ -1,0 +1,4 @@
+name: Vehicles Custom
+description: 'Provides vehicles custom table'
+core_version_requirement: ^9
+type: module

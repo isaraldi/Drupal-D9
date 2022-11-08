@@ -3,7 +3,7 @@
 /**
  * Implements hook_views_data().
  */
-function vehicles_custom_views_data() {
+function d9_vehicles_custom_views_data() {
   $data['vehicles_custom'] = [
     'table' => [
       'group' => t('Custom vehicles table'),

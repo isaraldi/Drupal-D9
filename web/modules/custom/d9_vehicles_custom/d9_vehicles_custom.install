@@ -3,7 +3,7 @@
 /**
  * Implements hook_schema().
  */
-function vehicles_custom_schema() {
+function d9_vehicles_custom_schema() {
   $schema['vehicles_custom'] = [
     'description' => 'A table to store simple data',
     'fields' => [

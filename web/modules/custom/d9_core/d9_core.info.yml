@@ -1,0 +1,4 @@
+name: D9 Core
+description: 'Provides core functionalities'
+core_version_requirement: ^9
+type: module

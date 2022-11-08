@@ -21,6 +21,8 @@
         "drupal/core-project-message": "^9.4",
         "drupal/core-recommended": "^9.4",
         "drupal/features": "^3.12",
+        "drupal/gin": "^3.0@beta",
+        "drupal/gin_toolbar": "^1.0@beta",
         "drupal/paragraphs": "^1.15",
         "drupal/webform": "^6.2@beta"
     },

@@ -1,0 +1,6 @@
+d9_user.edit_user:
+  title: Edit my details
+  weight: 10
+  menu_name: account
+  route_name: entity.user.edit_form
+  class: Drupal\d9_user\Plugin\Menu\EditUserMenuLink

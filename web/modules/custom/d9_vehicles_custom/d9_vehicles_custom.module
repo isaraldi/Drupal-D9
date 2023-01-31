@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * BB Step Page content type related code.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\views\Views;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function d9_core_preprocess_node(&$variables) {
+  $node = $variables['node'];
+
+
+  if ($node->bundle() === 'page') {
+
+    if (!$node->get('field_articles')->isEmpty()) {
+      if ($view = Views::getView('resources_for_step')) {
+        // Set all Resources referenced on the node as the view argument.
+        $resources = array_column($node->get('article_for_page')->getValue(), 'target_id');
+        $display_id = 'default';
+        $view->setArguments([implode('+', $resources)]);
+        $view->setDisplay($display_id);
+        $view->preExecute();
+        $view->execute();
+
+        $variables['content']['view'] = $view->buildRenderable($display_id, $resources);
+      }
+    }
+
+    // Set subtitle field on the variable to be used on the template, as it is
+    // set to be displayed as label.
+    if ($previous_step = $node->get('field_previous_step')->referencedEntities()) {
+      $variables['content']['field_previous_step'][0]['#subtitle'] = reset($previous_step)->get('field_subtitle')->value;
+    }
+
+    if ($next_step = $node->get('field_next_step')->referencedEntities()) {
+      $variables['content']['field_next_step'][0]['#subtitle'] = reset($next_step)->get('field_subtitle')->value;
+    }
+
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function bb_step_page_insert(EntityInterface $entity) {
+  d9_core_update_page_reference($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function bb_step_page_update(EntityInterface $entity) {
+  d9_core_update_page_reference($entity);
+}
+
+/**
+ * Helper function to be trigger on both insert and update node.
+ *
+ * The resource and step_page content types reference each
+ * other. When a step_page type node is updated, find its
+ * resource node. Then make sure this resource node
+ * refers back to the step_page node.
+ */
+function d9_core_update_page_reference(&$entity) {
+  $is_valid_nodes = ($entity->bundle() !== 'page' && $entity->bundle() !== 'article');
+  if ($is_valid_nodes) {
+    return;
+  }
+
+  $step_page_nid = $entity->id();
+
+  if ($entity->bundle() === 'step_page') {
+    $reference_field = 'field_page';
+    $overview_field = 'field_steps';
+  }
+  else {
+    $reference_field = 'field_steps';
+    $overview_field = 'field_resources';
+  }
+
+  $referenced_nodes = $entity->{$reference_field}->referencedEntities() ?? FALSE;
+  if (empty($referenced_nodes)) {
+    return;
+  }
+
+  foreach ($referenced_nodes as $referenced_node) {
+    try {
+      $has_ref_to_this_step_page = array_filter($referenced_node->{$overview_field}->referencedEntities(), function (EntityInterface $page_node) use ($step_page_nid): bool {
+        return $page_node->id() === $step_page_nid;
+      });
+
+      if ($has_ref_to_this_step_page) {
+        continue;
+      }
+
+      $referenced_node->{$overview_field}->appendItem($step_page_nid);
+      $referenced_node->save();
+    }
+    catch (Exception $e) {
+      Drupal::service('logger.factory')
+        ->get('step_page')
+        ->error($e->getMessage());
+    }
+  }
+}

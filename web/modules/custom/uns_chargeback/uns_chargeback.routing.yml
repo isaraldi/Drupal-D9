@@ -1,0 +1,7 @@
+entity.chargeback.settings:
+  path: 'admin/structure/chargeback'
+  defaults:
+    _form: '\Drupal\uns_chargeback\Form\ChargebackSettingsForm'
+    _title: 'Chargeback'
+  requirements:
+    _permission: 'administer chargeback'

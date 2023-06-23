@@ -1,0 +1,10 @@
+name: Chargeback
+type: module
+description: 'Provides a chargeback entity.'
+package: UNS
+core_version_requirement: '^8.9 || ^9'
+configure: entity.chargeback.settings
+dependencies:
+  - 'drupal:datetime'
+  - 'drupal:field'
+  - 'drupal:user'

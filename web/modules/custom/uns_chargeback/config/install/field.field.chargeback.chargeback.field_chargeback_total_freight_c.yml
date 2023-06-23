@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.chargeback.field_chargeback_total_freight_c
+  module:
+    - uns_chargeback
+id: chargeback.chargeback.field_chargeback_total_freight_c
+field_name: field_chargeback_total_freight_c
+entity_type: chargeback
+bundle: chargeback
+label: 'Chargeback Total Freight Cost'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

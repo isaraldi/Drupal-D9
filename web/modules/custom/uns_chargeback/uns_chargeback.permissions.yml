@@ -1,0 +1,13 @@
+administer chargeback:
+  title: 'Administer chargeback settings'
+  restrict access: true
+access chargeback overview:
+  title: 'Access chargeback overview page'
+delete chargeback:
+  title: Delete chargeback
+create chargeback:
+  title: Create chargeback
+view chargeback:
+  title: View chargeback
+edit chargeback:
+  title: Edit chargeback

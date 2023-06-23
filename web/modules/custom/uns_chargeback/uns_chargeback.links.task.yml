@@ -1,0 +1,22 @@
+entity.chargeback.settings:
+  title: Settings
+  route_name: entity.chargeback.settings
+  base_route: entity.chargeback.settings
+entity.chargeback.view:
+  title: View
+  route_name: entity.chargeback.canonical
+  base_route: entity.chargeback.canonical
+entity.chargeback.edit_form:
+  title: Edit
+  route_name: entity.chargeback.edit_form
+  base_route: entity.chargeback.canonical
+entity.chargeback.delete_form:
+  title: Delete
+  route_name: entity.chargeback.delete_form
+  base_route: entity.chargeback.canonical
+  weight: 10
+entity.chargeback.collection:
+  title: Chargebacks
+  route_name: entity.chargeback.collection
+  base_route: system.admin_content
+  weight: 10

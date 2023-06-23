@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.chargeback.field_chargeback_ship_date
+  module:
+    - datetime
+    - uns_chargeback
+id: chargeback.chargeback.field_chargeback_ship_date
+field_name: field_chargeback_ship_date
+entity_type: chargeback
+bundle: chargeback
+label: 'Chargeback Ship Date'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

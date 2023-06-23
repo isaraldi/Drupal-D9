@@ -1,0 +1,10 @@
+entity.chargeback.settings:
+  title: Chargeback
+  description: Configure the Chargeback entity type
+  route_name:  entity.chargeback.settings
+  parent: system.admin_structure
+entity.chargeback.collection:
+  title: Chargebacks
+  description: List of chargebacks
+  route_name: entity.chargeback.collection
+  parent: system.admin_content

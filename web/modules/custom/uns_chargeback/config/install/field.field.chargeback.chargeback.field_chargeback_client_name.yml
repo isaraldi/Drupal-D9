@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.chargeback.field_chargeback_client_name
+  module:
+    - uns_chargeback
+id: chargeback.chargeback.field_chargeback_client_name
+field_name: field_chargeback_client_name
+entity_type: chargeback
+bundle: chargeback
+label: 'Chargeback Client Name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,100 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function uns_chargeback_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
+  if ($entity_form['#bundle'] == 'chargeback') {
+    // Pull through the ISBN from the product to the chargeback.
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getBuildInfo()['callback_object']->getEntity();
+    if ($node && $node->hasField('field_print_isbn') && !$node->get('field_print_isbn')->isEmpty()) {
+      $title = $node->get('field_print_isbn')->value;
+      $entity_form['title']['widget'][0]['value']['#default_value'] = $title;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function uns_chargeback_node_presave(NodeInterface $node): void {
+  // Check if the chargeback start field has changed from disabled to enabled, and
+  // check if the chargeback entity exists.
+  if ($node->original->get('field_chargeback_record')->value == 0 &&
+    $node->get('field_chargeback_record')->value == 1 &&
+    !$node->get('field_chargebacks')->isEmpty()) {
+
+    // If the chargeback exists, get all the required fields to create an item
+    // that will be added to the queue.
+    $chargeback = $node->get('field_chargebacks')->entity;
+
+    // Get the queue service.
+    /** @var QueueFactory $queue_factory */
+    $queue_factory = \Drupal::service('queue');
+    /** @var QueueInterface $queue */
+    $queue = $queue_factory->get('chargeback_mail');
+
+    $item['chargeback_id'] = $chargeback->id();
+    $item['node_id'] = $node->id();
+
+    $queue->createItem($item);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uns_chargeback_theme($existing, $type, $theme, $path) {
+
+  return [
+    'chargeback_email' => [
+      'variables' => [
+        'en_long_title' => NULL,
+        'fr_long_title' => NULL,
+        'sp_long_title' => NULL,
+        'chargeback' => NULL,
+      ],
+      'path' => '/themes/custom/un_shop/templates/misc',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_mail().
+ */
+function uns_chargeback_mail($key, &$message, $params){
+  if ($key === 'chargeback_mail') {
+    $renderer = \Drupal::service('renderer');
+    $from = \Drupal::config('system.site')->get('mail');
+
+    // Render chargeback using full view mode.
+    $render_controller = \Drupal::entityTypeManager()->getViewBuilder($params['chargeback']->getEntityTypeId());
+    $render_output = $render_controller->view($params['chargeback']);
+
+    // Add processed body data.
+    $body_data = [
+      '#theme' => 'chargeback_email',
+      '#en_long_title' => $params['en_long_title'],
+      '#fr_long_title' => $params['fr_long_title'],
+      '#sp_long_title' => $params['sp_long_title'],
+      '#chargeback' => $renderer->render($render_output),
+    ];
+
+    // Add generic headers and email data.
+    $message['from'] = $from;
+    $message['subject'] = t('Chargeback email notification');
+    $message['body'][] = $renderer->render($body_data);
+
+    $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+    $message['headers']['Return-Path'] = $from;
+    $message['headers']['Sender'] = $from;
+    $message['headers']['Reply-to'] = $from;
+    $message['headers']['From'] = $from;
+  }
+}

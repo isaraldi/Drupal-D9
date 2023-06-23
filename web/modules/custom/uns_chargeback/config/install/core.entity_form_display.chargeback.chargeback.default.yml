@@ -1,0 +1,100 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.chargeback.chargeback.field_chargeback_amount
+    - field.field.chargeback.chargeback.field_chargeback_bac_code
+    - field.field.chargeback.chargeback.field_chargeback_client_email
+    - field.field.chargeback.chargeback.field_chargeback_client_name
+    - field.field.chargeback.chargeback.field_chargeback_date
+    - field.field.chargeback.chargeback.field_chargeback_quantity
+    - field.field.chargeback.chargeback.field_chargeback_ship_date
+    - field.field.chargeback.chargeback.field_chargeback_total_freight_c
+    - field.field.chargeback.chargeback.field_chargeback_unit_cost
+  module:
+    - datetime
+    - uns_chargeback
+id: chargeback.chargeback.default
+targetEntityType: chargeback
+bundle: chargeback
+mode: default
+content:
+  field_chargeback_amount:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_chargeback_bac_code:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_chargeback_client_email:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_chargeback_client_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_chargeback_date:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_chargeback_quantity:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_chargeback_ship_date:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_chargeback_total_freight_c:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_chargeback_unit_cost:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

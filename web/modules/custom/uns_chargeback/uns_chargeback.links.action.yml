@@ -1,0 +1,5 @@
+chargeback.add_form:
+  route_name: entity.chargeback.add_form
+  title: 'Add chargeback'
+  appears_on:
+    - entity.chargeback.collection

@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.chargeback.field_chargeback_quantity
+  module:
+    - uns_chargeback
+id: chargeback.chargeback.field_chargeback_quantity
+field_name: field_chargeback_quantity
+entity_type: chargeback
+bundle: chargeback
+label: 'Chargeback Quantity'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
